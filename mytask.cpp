@@ -18,7 +18,6 @@ MyTask::MyTask(QObject *parent) : QObject(parent)
         }
     }
 
-    carID = getCarID();
     ztpm = new ZTPManager(3320,QHostAddress("224.102.228.40"));
     connect(ztpm,SIGNAL(readyRead()),this,SLOT(OnReadZTP()));
 
@@ -37,7 +36,7 @@ void MyTask::OnReadZTP()
 {
     ZTPprotocol ztp;
     ztpm->getOneZtp(ztp);
-    if(ztp.getPara("T") == "SLM_STATE" && ztp.getPara("CAR_ID").toInt() == carID)
+    if(ztp.getPara("T") == "SLM_STATE" && ztp.getPara("CAR_ID").toInt() == getCarID())
     {
         timer.stop();
         timer.start(15000);
